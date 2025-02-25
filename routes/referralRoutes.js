@@ -15,11 +15,11 @@ router.post('/referral', async (req, res) => {
             return res.status(400).json({ error: 'All fields are required' });
         }
 
+        await sendReferralEmail(refereeEmail, referrerName, refereeName, course);
+
         const referral = await prisma.referral.create({
             data: { referrerName, refereeName, refereeEmail, course }
         });
-
-        await sendReferralEmail(refereeEmail, referrerName, refereeName, course);
 
         console.log("Referral submitted successfully")
         res.status(201).json({ message: 'Referral submitted successfully', referral });
